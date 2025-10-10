@@ -1,0 +1,106 @@
+name: 构建和发布
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: 构建二进制文件
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: windows
+            goarch: amd64
+            ext: .exe
+          - goos: windows
+            goarch: arm64
+            ext: .exe
+          - goos: linux
+            goarch: amd64
+            ext: ""
+          - goos: linux
+            goarch: arm64
+            ext: ""
+
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+
+    - name: 设置Go环境
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.23'
+
+    - name: 构建二进制文件
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+        CGO_ENABLED: 0
+      run: |
+        mkdir -p dist
+        go build -ldflags="-s -w" -o dist/go-mcp-mysql-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} main.go
+
+    - name: 上传构建产物
+      uses: actions/upload-artifact@v4
+      with:
+        name: go-mcp-mysql-${{ matrix.goos }}-${{ matrix.goarch }}
+        path: dist/go-mcp-mysql-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
+
+  release:
+    name: 创建发布
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+      
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+
+    - name: 下载所有构建产物
+      uses: actions/download-artifact@v4
+      with:
+        path: dist
+
+    - name: 列出下载的文件
+      run: find dist -type f -name "*" | sort
+
+    - name: 创建发布
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          dist/go-mcp-mysql-linux-amd64/go-mcp-mysql-linux-amd64
+          dist/go-mcp-mysql-linux-arm64/go-mcp-mysql-linux-arm64
+          dist/go-mcp-mysql-windows-amd64/go-mcp-mysql-windows-amd64.exe
+          dist/go-mcp-mysql-windows-arm64/go-mcp-mysql-windows-arm64.exe
+        body: |
+          ## MCP MySQL 工具 ${{ github.ref_name }}
+          
+          ### 下载
+          
+          **Windows:**
+          - [go-mcp-mysql-windows-amd64.exe](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-windows-amd64.exe) - Windows x64
+          - [go-mcp-mysql-windows-arm64.exe](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-windows-arm64.exe) - Windows ARM64
+          
+          **Linux:**
+          - [go-mcp-mysql-linux-amd64](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-linux-amd64) - Linux x64
+          - [go-mcp-mysql-linux-arm64](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-linux-arm64) - Linux ARM64
+          
+          ### 安装说明
+          
+          1. 下载适合你系统的二进制文件
+          2. 将文件重命名为 `go-mcp-mysql` (Linux) 或 `go-mcp-mysql.exe` (Windows)
+          3. 将文件放到PATH环境变量中的目录
+          4. Linux用户需要添加执行权限: `chmod +x go-mcp-mysql`
+          
+          ### 使用方法
+          
+          请参考 [README.md](https://github.com/pengcunfu/go-mcp-mysql/blob/master/README.md) 了解详细使用方法。
+        draft: false
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
