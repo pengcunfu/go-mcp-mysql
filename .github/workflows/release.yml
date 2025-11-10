@@ -13,16 +13,25 @@ jobs:
     strategy:
       matrix:
         include:
+          # Windows
           - goos: windows
             goarch: amd64
             ext: .exe
           - goos: windows
             goarch: arm64
             ext: .exe
+          # Linux
           - goos: linux
             goarch: amd64
             ext: ""
           - goos: linux
+            goarch: arm64
+            ext: ""
+          # macOS
+          - goos: darwin
+            goarch: amd64
+            ext: ""
+          - goos: darwin
             goarch: arm64
             ext: ""
 
@@ -74,33 +83,56 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          dist/go-mcp-mysql-linux-amd64/go-mcp-mysql-linux-amd64
-          dist/go-mcp-mysql-linux-arm64/go-mcp-mysql-linux-arm64
           dist/go-mcp-mysql-windows-amd64/go-mcp-mysql-windows-amd64.exe
           dist/go-mcp-mysql-windows-arm64/go-mcp-mysql-windows-arm64.exe
+          dist/go-mcp-mysql-linux-amd64/go-mcp-mysql-linux-amd64
+          dist/go-mcp-mysql-linux-arm64/go-mcp-mysql-linux-arm64
+          dist/go-mcp-mysql-darwin-amd64/go-mcp-mysql-darwin-amd64
+          dist/go-mcp-mysql-darwin-arm64/go-mcp-mysql-darwin-arm64
         body: |
-          ## MCP MySQL 工具 ${{ github.ref_name }}
+          ## go-mcp-mysql ${{ github.ref_name }}
           
-          ### 下载
+          Zero-dependency MySQL MCP Server for interacting with MySQL databases.
           
-          **Windows:**
+          ### 📥 Downloads
+          
+          #### Windows
           - [go-mcp-mysql-windows-amd64.exe](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-windows-amd64.exe) - Windows x64
           - [go-mcp-mysql-windows-arm64.exe](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-windows-arm64.exe) - Windows ARM64
           
-          **Linux:**
+          #### Linux
           - [go-mcp-mysql-linux-amd64](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-linux-amd64) - Linux x64
           - [go-mcp-mysql-linux-arm64](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-linux-arm64) - Linux ARM64
           
-          ### 安装说明
+          #### macOS
+          - [go-mcp-mysql-darwin-amd64](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-darwin-amd64) - macOS Intel (x64)
+          - [go-mcp-mysql-darwin-arm64](https://github.com/pengcunfu/go-mcp-mysql/releases/download/${{ github.ref_name }}/go-mcp-mysql-darwin-arm64) - macOS Apple Silicon (M1/M2/M3)
           
-          1. 下载适合你系统的二进制文件
-          2. 将文件重命名为 `go-mcp-mysql` (Linux) 或 `go-mcp-mysql.exe` (Windows)
-          3. 将文件放到PATH环境变量中的目录
-          4. Linux用户需要添加执行权限: `chmod +x go-mcp-mysql`
+          ### 📦 Installation
           
-          ### 使用方法
+          **Windows:**
+          1. Download the appropriate `.exe` file for your architecture
+          2. Rename to `go-mcp-mysql.exe`
+          3. Place in a directory in your PATH
           
-          请参考 [README.md](https://github.com/pengcunfu/go-mcp-mysql/blob/master/README.md) 了解详细使用方法。
+          **Linux/macOS:**
+          1. Download the appropriate binary for your system
+          2. Rename to `go-mcp-mysql`
+          3. Add execute permission: `chmod +x go-mcp-mysql`
+          4. Move to a directory in your PATH (e.g., `/usr/local/bin`)
+          
+          ### 📖 Documentation
+          
+          - [English Documentation](https://github.com/pengcunfu/go-mcp-mysql/blob/master/README_EN.md)
+          - [中文文档](https://github.com/pengcunfu/go-mcp-mysql/blob/master/README.md)
+          
+          ### 🔧 Quick Start
+          
+          ```bash
+          go-mcp-mysql --host localhost --user root --pass password --db mydb
+          ```
+          
+          For more details, please refer to the [README](https://github.com/pengcunfu/go-mcp-mysql).
         draft: false
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
