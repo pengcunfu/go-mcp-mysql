@@ -137,6 +137,14 @@ View table structure details.
   - `name`: Table name
 - **Returns**: Table structure information
 
+#### `use_database`
+Select the current database to use. Executes a `USE database` statement to switch databases.
+- **Parameters**:
+  - `name`: Database name to use
+- **Returns**: Operation result message
+
+> 💡 **Tip**: If you don't specify the `--db` parameter during configuration, you can use this tool to select a database after connecting.
+
 ### Data Operations
 
 #### `read_query`

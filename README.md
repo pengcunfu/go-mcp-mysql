@@ -137,6 +137,14 @@ go install -v github.com/pengcunfu/go-mcp-mysql@latest
   - `name`：表名
 - **返回**：表的结构信息
 
+#### `use_database`
+选择当前使用的数据库。执行 `USE database` 语句切换数据库。
+- **参数**：
+  - `name`：要使用的数据库名
+- **返回**：操作结果消息
+
+> 💡 **提示**：如果配置时未指定 `--db` 参数，可以使用此工具在连接后选择数据库。
+
 ### 数据操作
 
 #### `read_query`

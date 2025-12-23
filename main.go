@@ -117,6 +117,15 @@ func main() {
 		),
 	)
 
+	useDatabaseTool := mcp.NewTool(
+		"use_database",
+		mcp.WithDescription("选择当前使用的数据库。执行 USE database 语句切换数据库"),
+		mcp.WithString("name",
+			mcp.Required(),
+			mcp.Description("要使用的数据库名"),
+		),
+	)
+
 	// 数据工具
 	readQueryTool := mcp.NewTool(
 		"read_query",
@@ -196,6 +205,15 @@ func main() {
 
 	s.AddTool(descTableTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		result, err := HandleDescTable(request.Params.Arguments["name"].(string))
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+
+		return mcp.NewToolResultText(result), nil
+	})
+
+	s.AddTool(useDatabaseTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		result, err := HandleUseDatabase(request.Params.Arguments["name"].(string))
 		if err != nil {
 			return mcp.NewToolResultError(err.Error()), nil
 		}
@@ -440,6 +458,20 @@ func HandleDescTable(name string) (string, error) {
 	}
 
 	return result[0].CreateTable, nil
+}
+
+func HandleUseDatabase(name string) (string, error) {
+	db, err := GetDB()
+	if err != nil {
+		return "", err
+	}
+
+	_, err = db.Exec(fmt.Sprintf("USE `%s`", name))
+	if err != nil {
+		return "", fmt.Errorf("切换数据库失败: %v", err)
+	}
+
+	return fmt.Sprintf("已成功切换到数据库: %s", name), nil
 }
 
 func MapToCSV(m []map[string]interface{}, headers []string) (string, error) {
