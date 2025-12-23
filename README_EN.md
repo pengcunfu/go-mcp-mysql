@@ -15,18 +15,18 @@ English | [简体中文](README.md)
 
 ---
 
-## ✨ Features
+## Features
 
-- 🚀 **Zero Dependencies**: No Node.js or Python required, single executable binary
-- 🔒 **Safe & Secure**: Read-only mode support to prevent accidental write operations
-- 📊 **Query Optimization**: Optional EXPLAIN check for query performance optimization
-- 🛠️ **Full CRUD**: Complete lifecycle management for databases and tables
-- ⚡ **High Performance**: Built with Go for exceptional performance
-- 🎯 **Easy to Use**: Support for both command-line arguments and DSN configuration
+- **Zero Dependencies**: No Node.js or Python required, single executable binary
+- **Safe & Secure**: Read-only mode support to prevent accidental write operations
+- **Query Optimization**: Optional EXPLAIN check for query performance optimization
+- **Full CRUD**: Complete lifecycle management for databases and tables
+- **High Performance**: Built with Go for exceptional performance
+- **Easy to Use**: Support for both command-line arguments and DSN configuration
 
-> ⚠️ **Note**: This project is under active development. Please test thoroughly before using in production.
+> **Note**: This project is under active development. Please test thoroughly before using in production.
 
-## 📦 Installation
+## Installation
 
 ### Option 1: Download Pre-built Binary
 
@@ -40,7 +40,7 @@ If you have Go 1.21 or higher installed:
 go install -v github.com/pengcunfu/go-mcp-mysql@latest
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Configuration Method A: Using Command-Line Arguments
 
@@ -76,7 +76,7 @@ go install -v github.com/pengcunfu/go-mcp-mysql@latest
 }
 ```
 
-> 💡 **Tip**: For more DSN configuration options, refer to the [MySQL DSN Documentation](https://github.com/go-sql-driver/mysql#dsn-data-source-name).
+> **Tip**: For more DSN configuration options, refer to the [MySQL DSN Documentation](https://github.com/go-sql-driver/mysql#dsn-data-source-name).
 
 ### Using Absolute Path
 
@@ -93,7 +93,7 @@ If the binary is not in your `$PATH`, use the full path. For example, Windows us
 }
 ```
 
-## ⚙️ Configuration Options
+## Configuration Options
 
 ### Optional Flags
 
@@ -102,9 +102,9 @@ If the binary is not in your `$PATH`, use the full path. For example, Windows us
 | `--read-only` | Enable read-only mode, allowing only tools starting with `list`, `read_`, and `desc_` to prevent data modification |
 | `--with-explain-check` | Use `EXPLAIN` to check query plans before executing CRUD queries for performance optimization |
 
-> 📌 **Note**: You need to restart the MCP server after changing flags for them to take effect.
+> **Note**: You need to restart the MCP server after changing flags for them to take effect.
 
-## 🛠️ Available Tools
+## Available Tools
 
 ### Database Schema Management
 
@@ -143,7 +143,7 @@ Select the current database to use. Executes a `USE database` statement to switc
   - `name`: Database name to use
 - **Returns**: Operation result message
 
-> 💡 **Tip**: If you don't specify the `--db` parameter during configuration, you can use this tool to select a database after connecting.
+> **Tip**: If you don't specify the `--db` parameter during configuration, you can use this tool to select a database after connecting.
 
 ### Data Operations
 
@@ -171,7 +171,7 @@ Execute delete SQL queries (DELETE).
   - `query`: DELETE SQL statement
 - **Returns**: Number of affected rows
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! If you have any ideas, suggestions, or find bugs, please:
 
@@ -181,18 +181,18 @@ Contributions are welcome! If you have any ideas, suggestions, or find bugs, ple
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is licensed under the [Apache License 2.0](LICENSE).
 
-## 🔗 Related Links
+## Related Links
 
 - [GitHub Repository](https://github.com/pengcunfu/go-mcp-mysql)
 - [Issue Tracker](https://github.com/pengcunfu/go-mcp-mysql/issues)
 - [MCP Protocol Documentation](https://modelcontextprotocol.io/)
 - [MySQL Driver Documentation](https://github.com/go-sql-driver/mysql)
 
-## 👤 Author
+## Author
 
 **pengcunfu**
 
@@ -202,6 +202,6 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 
 <div align="center">
 
-If this project helps you, please give it a ⭐️!
+If this project helps you, please give it a star!
 
 </div>
